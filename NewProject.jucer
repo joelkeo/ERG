@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="CqW6zE" name="RhythmGenerator" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="InfernoAudio"
+              companyWebsite="inferno-audio.com" companyEmail="infernoedm@gmail.com"
+              pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
+  <MAINGROUP id="OPhjVd" name="RhythmGenerator">
+    <GROUP id="{385269A0-650A-E43B-69BA-D41DE2F33268}" name="Source">
+      <GROUP id="{0D829AD3-BCE4-1767-9DBA-FA5E4260B7F4}" name="Processor">
+        <FILE id="zLR2mT" name="ArpNote.cpp" compile="1" resource="0" file="Source/ArpNote.cpp"/>
+        <FILE id="IRSvZo" name="ArpNote.h" compile="0" resource="0" file="Source/ArpNote.h"/>
+        <FILE id="P6MPJX" name="ProcessorCommunicators.cpp" compile="1" resource="0"
+              file="Source/ProcessorCommunicators.cpp"/>
+        <FILE id="OeMJbM" name="ProcessorCommunicators.h" compile="0" resource="0"
+              file="Source/ProcessorCommunicators.h"/>
+        <FILE id="sJxVag" name="VRPSEnvelopeAttachment.cpp" compile="1" resource="0"
+              file="Source/VRPSEnvelopeAttachment.cpp" skipPCH="1"/>
+        <FILE id="WjT12F" name="VRPSEnvelopeAttachment.h" compile="0" resource="0"
+              file="Source/VRPSEnvelopeAttachment.h"/>
+        <FILE id="qHWff1" name="VRPS.cpp" compile="1" resource="0" file="Source/VRPS.cpp"/>
+        <FILE id="Q6ESXh" name="PolynomialPhaseSignal.cpp" compile="1" resource="0"
+              file="Source/PolynomialPhaseSignal.cpp"/>
+        <FILE id="lIiqur" name="PolynomialPhaseSignal.h" compile="0" resource="0"
+              file="Source/PolynomialPhaseSignal.h"/>
+        <FILE id="ldwqjp" name="VRPS.h" compile="0" resource="0" file="Source/VRPS.h"/>
+        <FILE id="jLJdx5" name="HostInfo.h" compile="0" resource="0" file="Source/HostInfo.h"/>
+        <FILE id="E95WBd" name="PhaseSignalEvent.h" compile="0" resource="0"
+              file="Source/PhaseSignalEvent.h"/>
+        <FILE id="BNEHm7" name="MidiScheduler.cpp" compile="1" resource="0"
+              file="Source/MidiScheduler.cpp"/>
+        <FILE id="zlfPcK" name="MidiScheduler.h" compile="0" resource="0" file="Source/MidiScheduler.h"/>
+        <FILE id="UxzOOY" name="PhaseSignal.cpp" compile="1" resource="0" file="Source/PhaseSignal.cpp"/>
+        <FILE id="FLPfWx" name="PhaseSignal.h" compile="0" resource="0" file="Source/PhaseSignal.h"/>
+        <FILE id="UenexC" name="ArpPattern.cpp" compile="1" resource="0" file="Source/ArpPattern.cpp"/>
+        <FILE id="d59Ap0" name="ArpPattern.h" compile="0" resource="0" file="Source/ArpPattern.h"/>
+        <FILE id="vMGncI" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
+        <FILE id="aQnn62" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
+        <FILE id="ij9G3U" name="ExponentialPhaseSignal.cpp" compile="1" resource="0"
+              file="Source/ExponentialPhaseSignal.cpp"/>
+        <FILE id="KUQCO6" name="ExponentialPhaseSignal.h" compile="0" resource="0"
+              file="Source/ExponentialPhaseSignal.h"/>
+        <FILE id="osUyBI" name="PluginProcessor.cpp" compile="1" resource="0"
+              file="Source/PluginProcessor.cpp"/>
+        <FILE id="HYZRJl" name="PluginProcessor.h" compile="0" resource="0"
+              file="Source/PluginProcessor.h"/>
+      </GROUP>
+      <GROUP id="{C4F40E81-2FFE-34C4-1397-05DBE82376E1}" name="Editor">
+        <FILE id="dsuzoT" name="ArpPatternComponent.cpp" compile="1" resource="0"
+              file="Source/ArpPatternComponent.cpp"/>
+        <FILE id="TfTmvO" name="ArpPatternComponent.h" compile="0" resource="0"
+              file="Source/ArpPatternComponent.h"/>
+        <FILE id="zMQBze" name="EditorInfo.cpp" compile="1" resource="0" file="Source/EditorInfo.cpp"/>
+        <FILE id="DId2DT" name="EditorInfo.h" compile="0" resource="0" file="Source/EditorInfo.h"/>
+        <FILE id="KBxbQ8" name="EnvelopeComponent.cpp" compile="1" resource="0"
+              file="Source/EnvelopeComponent.cpp"/>
+        <FILE id="e3g0nK" name="EnvelopeComponent.h" compile="0" resource="0"
+              file="Source/EnvelopeComponent.h"/>
+        <FILE id="qJgYoo" name="EnvelopeListener.h" compile="0" resource="0"
+              file="Source/EnvelopeListener.h"/>
+        <FILE id="A5u3rn" name="NoteSelectionInfo.h" compile="0" resource="0"
+              file="Source/NoteSelectionInfo.h"/>
+        <FILE id="yng3bA" name="Palette.h" compile="0" resource="0" file="Source/Palette.h"/>
+        <FILE id="ejevt9" name="PluginEditor.cpp" compile="1" resource="0"
+              file="Source/PluginEditor.cpp"/>
+        <FILE id="WYv5sR" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      </GROUP>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="RhythmGenerator" vst3BinaryLocation="/Library/Audio/Plug-Ins/VST3/"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="NewProject"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+</JUCERPROJECT>

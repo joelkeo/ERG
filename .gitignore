@@ -1,0 +1,13 @@
+Builds/
+Build/
+build/
+builds/
+.idea/
+.vscode/
+.DS_Store
+*.xcodeproj
+*.sublime-project
+*.sublime-workspace
+.vs/
+*.ncb
+*.user
