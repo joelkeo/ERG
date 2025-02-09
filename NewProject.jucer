@@ -49,6 +49,8 @@
               file="Source/ArpPatternComponent.cpp"/>
         <FILE id="TfTmvO" name="ArpPatternComponent.h" compile="0" resource="0"
               file="Source/ArpPatternComponent.h"/>
+        <FILE id="mt4Wnn" name="BigKnob.cpp" compile="1" resource="0" file="Source/BigKnob.cpp"/>
+        <FILE id="pn4xFg" name="BigKnob.h" compile="0" resource="0" file="Source/BigKnob.h"/>
         <FILE id="zMQBze" name="EditorInfo.cpp" compile="1" resource="0" file="Source/EditorInfo.cpp"/>
         <FILE id="DId2DT" name="EditorInfo.h" compile="0" resource="0" file="Source/EditorInfo.h"/>
         <FILE id="KBxbQ8" name="EnvelopeComponent.cpp" compile="1" resource="0"

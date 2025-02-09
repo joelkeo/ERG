@@ -58,7 +58,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     // Parameter
-    APF* lengthParameter = new APF("expRhythmLength", "exponential rhythm length", 1.f, 64.f, 8.f);
+    APF* lengthParameter = new APF("expRhythmLength", "length", 1.f, 64.f, 8.f);
     APF* endRateParameter = new APF("endRate", "end rate", 0, 8.f, .25);
     API* zParameter = new API("oscillations", "oscillations", 1, 100, 1);
     APF* powerParameter = new APF("power", "power", 0, 5, 2.);

@@ -20,43 +20,53 @@ EnvelopeComponent::~EnvelopeComponent() {
 }
 
 void EnvelopeComponent::paint(juce::Graphics& g) {
-    DBG("num lines");
-    DBG(lineXPositions.size());
-    DBG(ratePath.getLength());
+    double width = getWidth();
+    double height = getHeight();
+    // HANDLE PATH SCALING
+    juce::AffineTransform scaleTransform = juce::AffineTransform::scale(width, height);
+    ratePath.applyTransform(scaleTransform);
+    // COLORS
+    juce::Colour backgroundColor = editorInfo.main();
+    juce::Colour phaseColor = editorInfo.secondary();
+    juce::Colour phaseBoxColor = editorInfo.tertiary();
+    juce::Colour rateColor = editorInfo.highlight();
+    g.fillAll(backgroundColor);
+    // DRAW RATE LINE
     juce::PathStrokeType strokeType(1.0f, juce::PathStrokeType::curved);
-    g.fillAll(editorInfo.main());
-    g.setColour(editorInfo.secondary().withAlpha(.8f));
+    g.setColour(rateColor);
     g.strokePath(ratePath, strokeType);
-    g.setColour(editorInfo.highlight());
-    // FILL IN SHIT
+    // FILL IN RATE PATH PORTION
     g.saveState();
     g.reduceClipRegion(0, 0, position, getHeight());
-    g.setColour(editorInfo.secondary().withAlpha(.2f));
+    g.setColour(rateColor.withAlpha(.34f));
     g.fillPath(ratePath);
     g.restoreState();
-    // END FILL IN SHIT
-    g.setColour(editorInfo.tertiary());
-    double height = getHeight();
+    // DRAW PHASE LINES
+    g.setColour(phaseColor.withAlpha(.3f));
     double halfHeight = height / 2.;
     for (int i = 0; i < lineXPositions.size(); i++) {
-        double x = lineXPositions[i];
+        double x = lineXPositions[i] * width;
         double yScaling = lineYScalings[i];
         double yStart =  halfHeight * (1. - yScaling);
         g.drawLine(x, yStart, x, yStart + height * yScaling);
     }
-    // HIGHLIGHT CURRENT PATTERN
+    // HIGHLIGHT CURRENT PHASE PATTERN
     if (showingPosition) {
-        double xEnd = zIndex >= lineXPositions.size() - 1 ? getWidth() : lineXPositions[zIndex+1];
-        int xStart = lineXPositions[zIndex];
+        double xEnd = zIndex >= lineXPositions.size() - 1 ? width : lineXPositions[zIndex+1] * width;
+        int xStart = lineXPositions[zIndex] * width;
         double yScaling = lineYScalings[zIndex];
         double yStart =  halfHeight * (1. - yScaling);
         double patternWidth = xEnd - xStart;
-        float alpha = (1.f - this->moddedValue) * .3;
-        g.setColour(editorInfo.tertiary().withAlpha(alpha));
+        float alphaStart = .8f;
+        float alpha = (1.f - this->moddedValue) * alphaStart;
+        g.setColour(phaseBoxColor.withAlpha(alpha));
         g.fillRect(xStart, yStart, patternWidth, height * yScaling);
-        g.setColour(editorInfo.secondary());
+        g.setColour(rateColor);
         g.drawLine(position, 0, position, height, 1);
     }
+    // UNDO SCALING
+    juce::AffineTransform inverseTransform = juce::AffineTransform::scale(1 / width, 1 / height);
+    ratePath.applyTransform(inverseTransform);
 }
 
 // position is 0,1 normalized
@@ -77,32 +87,28 @@ void EnvelopeComponent::updateFormula(std::function<double(double)> phaseFormula
     DBG("FORMULA UPDATE -----------------------");
     DBG(length);
     // RATE FORMULA
-    int width = getWidth();
-    double dWidth = width;
-    int height = getHeight();
-    double dHeight = height;
     double maxY = std::max(rateFormula(0.), rateFormula(length));
-    double yScaling = dHeight / maxY;
+    double yScaling = 1 / maxY;
     double maxX = length;
-    double xScaling = dWidth / maxX;
-    int resolution = width;
+    double xScaling = 1 / maxX;
+    int resolution = 100;
     double xIncrement = ((double) length) / resolution;
     ratePath.clear();
     // PATH START
     double y = rateFormula(0);
-    ratePath.startNewSubPath(0 * xScaling, dHeight - y * yScaling);
-    for (double x = 0.; x < length; x += xIncrement) {
+    ratePath.startNewSubPath(0 * xScaling, 1 - y * yScaling);
+    for (double x = 0.; x <= length; x += xIncrement) {
         double y = rateFormula(x);
-        ratePath.lineTo(x * xScaling, dHeight - y * yScaling);
+        ratePath.lineTo(x * xScaling, 1 - y * yScaling);
     }
-    ratePath.lineTo(width, height);
-    ratePath.lineTo(0, height);
+    ratePath.lineTo(1, 1);
+    ratePath.lineTo(0, 1);
     ratePath.closeSubPath();
     // PHASE FORMULA
     phasePath.clear();
     // pATH START
     y = phaseFormula(0);
-    phasePath.startNewSubPath(0 * xScaling, dHeight - y * dHeight);
+    phasePath.startNewSubPath(0 * xScaling, 1 - y);
     double x = .001;
     double addition = .01;
     // BINARY SEARCH

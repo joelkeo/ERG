@@ -39,9 +39,9 @@ class ArpPattern {
     // IMPORT STUFF
     int position = 0;
     const int channelNumber = 1;
-    const static int resolution = 64;
+    const static int resolution = 128;
     const static int maxLengthInBeats = 8;
-    int yHeight = 7;
+    int yHeight = 5;
     int defaultSize = resolution / 4;
     float defaultVelocity = .8f;
     void addMessage(juce::MidiMessage midiMessage, int location);

@@ -17,22 +17,33 @@ pattern(communicators.arpPattern){
 }
 
 void ArpPatternComponent::paint(juce::Graphics& g) {
+    juce::Colour noteColor = editorInfo.secondary();
+    juce::Colour noteHighlightedColor = editorInfo.secondary();
+    juce::Colour verticalLinesColor = editorInfo.tertiary();
+    juce::Colour horizantalLinesColor = editorInfo.border();
+    juce::Colour shadedBarsColor = juce::Colour(236,222,224);
     double width = getWidth();
     double height = getHeight();
     double patternLength = pattern.getLength();
     int patternHeight = pattern.getHeight();
     int singleNoteHeight = height / patternHeight;
+    // SHADINGS
+    g.setColour(shadedBarsColor.withAlpha(.4f));
+    for (int i = 0; i <= patternHeight; i+=2) {
+        int y = i * singleNoteHeight;
+        g.fillRect(0, y, width, singleNoteHeight);
+    }
     // HORIZANTAL LINES
-    g.setColour(editorInfo.tertiary().withAlpha(.7f));
+    g.setColour(horizantalLinesColor.withAlpha(.7f));
     for (int i = 0; i <= patternHeight; i++) {
         int y = i * singleNoteHeight;
         g.drawLine(0, y, width, y);
     }
     // VERTICAL LINES
-    g.setColour(editorInfo.border().withAlpha(.5f));
+    g.setColour(verticalLinesColor.withAlpha(.5f));
     int halfWidth = width /2;
     g.drawLine(halfWidth, 0, halfWidth, height);
-    g.setColour(editorInfo.border().withAlpha(.3f));
+    g.setColour(verticalLinesColor.withAlpha(.2f));
     int quarterWidth = width / 4;
     g.drawLine(quarterWidth, 0, quarterWidth, height);
     g.drawLine(3 * quarterWidth, 0, 3 * quarterWidth, height);
@@ -46,23 +57,27 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
         int noteWidth = (((double) noteLength) / ((double) patternLength)) * width;
         int noteStartY = height - (singleNoteHeight * (note.noteNum + 1));
         if (noteCurrentStart <= patternPosition && noteCurrentEnd >= patternPosition) {
-            g.setColour(editorInfo.tertiary().withAlpha(.5f));
-            g.drawRect(noteStartX, noteStartY, noteWidth, singleNoteHeight, 5);
+            g.setColour(noteHighlightedColor.withAlpha(.3f));
+            g.fillRect(noteStartX, noteStartY, noteWidth, singleNoteHeight);
+            g.setColour(noteHighlightedColor.withAlpha(.7f));
+            g.drawRect(noteStartX, noteStartY, noteWidth, singleNoteHeight, 2);
         }
         else {
-            g.setColour(editorInfo.secondary().withAlpha(.5f));
+            g.setColour(noteColor.withAlpha(.2f));
+            g.fillRect(noteStartX, noteStartY, noteWidth, singleNoteHeight);
+            g.setColour(noteColor.withAlpha(.5f));
             g.drawRect(noteStartX, noteStartY, noteWidth, singleNoteHeight, 2);
         }
     }
     // POSITION
-    g.setColour(editorInfo.highlight());
+    g.setColour(editorInfo.highlight().withAlpha(.5f));
     int x = (((double) patternPosition) / patternLength) * width;
     if (patternPosition > 0) {
         DBG("Pattern position");
         DBG(patternPosition);
         DBG(x);
     }
-    g.drawLine(x, 0, x, height, 2);
+    g.drawLine(x, 0, x, height, 4);
 }
 
 void ArpPatternComponent::timerCallback() {

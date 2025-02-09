@@ -14,6 +14,7 @@
 #include "EnvelopeComponent.h"
 #include "ArpPatternComponent.h"
 #include "ProcessorCommunicators.h"
+#include "BigKnob.h"
 
 //==============================================================================
 /**
@@ -34,15 +35,10 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     NewProjectAudioProcessor& audioProcessor;
-    juce::Slider powerSlider;
-    juce::Slider zSlider;
-    juce::Slider lengthSlider;
-    juce::Slider endRateSlider;
-    // attachments
-    juce::SliderParameterAttachment powerAttachment;
-    juce::SliderParameterAttachment zAttachment;
-    juce::SliderParameterAttachment lengthAttachment;
-    juce::SliderParameterAttachment endRateAttachment;
+    BigKnob powerSlider;
+    BigKnob zSlider;
+    BigKnob lengthSlider;
+    BigKnob endRateSlider;
     // keyboard
     EnvelopeComponent envelope;
     ArpPatternComponent pattern;
