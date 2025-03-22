@@ -20,9 +20,9 @@ class EditorInfo {
     juce::Colour highlight();
     private:
     Palette* palette;
-    Palette pinky = Palette(juce::Colour(242,240,241),
-                            juce::Colour(178,25,156),
-                            juce::Colour(216,125,147),
+    Palette pinky = Palette(juce::Colour(253,197,244),
+                            juce::Colour(187,50,165),
+                            juce::Colour(228,169,175),
                             juce::Colour(107,76,101),
                             juce::Colour(255, 156, 231));
 };

@@ -92,8 +92,7 @@ void NewProjectAudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void NewProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    hostInfo.sampleRate = sampleRate;
 }
 
 void NewProjectAudioProcessor::releaseResources()
@@ -151,6 +150,7 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         hostInfo.bpm = bpmFromHost;
     }
     synth.process(buffer, midiMessages, buffer.getNumSamples());
+    DBG("FPN: " << juce::File::getSpecialLocation(juce::File::commonDocumentsDirectory).getFullPathName());
 }
 
 //==============================================================================

@@ -41,4 +41,6 @@ public juce::Timer {
     int zIndex = 0.;
     double moddedValue = 0.;
     int length = 1;
+    double labelDelta = .25;
+    double maxRate = 1.;
 };

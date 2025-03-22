@@ -18,6 +18,7 @@ attachment(parameter, *this) {
 }
 
 void BigKnob::paint(juce::Graphics& g) {
+    /*
     // scaling
     double height = getHeight();
     double width = getWidth();
@@ -60,4 +61,28 @@ void BigKnob::paint(juce::Graphics& g) {
     g.setColour(editorInfo.tertiary());
     juce::String str = parameter.name + "\n" + parameter.getCurrentValueAsText();
     g.drawFittedText(str, x, y, width, height, juce::Justification::centred, 2);
+     */
+    g.fillAll(juce::Colour(242,240,241));
+    juce::Colour bnc = juce::Colour(221,77,196);
+    float height = getHeight();
+    float width = getWidth();
+    DBG("VALUE: " << getValue());
+    double minValue = getMinimum();
+    double maxValue = getMaximum();
+    double sliderValue = getValue();
+    double normalizedValue = (sliderValue - minValue) / (maxValue - minValue);
+    float rectHeight = normalizedValue * height;
+    float topY = height - normalizedValue * height;
+    g.setColour(editorInfo.tertiary());
+    juce::Rectangle<int> box(0, topY, width, rectHeight);
+    g.setColour(bnc.withAlpha(.3f));
+    g.drawRect(box, 1);
+    g.drawRect(getLocalBounds());
+    g.setColour(bnc.withAlpha(.3f));
+    g.fillRect(box);
+    /// FONT
+    g.setFont(juce::Font(20.f));
+    g.setColour(bnc);
+    juce::String str = parameter.name + "\n" + parameter.getCurrentValueAsText();
+    g.drawFittedText(str, 0, 0, width, height, juce::Justification::centred, 2);
 }

@@ -21,11 +21,11 @@ pattern(editorInfo, communicators)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 500);
+    setSize (800, 425);
     DBG("editor constructed");
     // power slider
     powerSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    powerSlider.setRange(0, 5);
+    powerSlider.setRange(1, 5);
     addAndMakeVisible(powerSlider);
     // z slider
     zSlider.setSliderStyle(juce::Slider::LinearVertical);

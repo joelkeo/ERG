@@ -21,6 +21,7 @@ class ArpPattern {
     void addNote(double normalizedX, double normalizedY);
     void moveNote(NoteSelectionInfo selection, double normalizedX, double normalizedY, double xDelta);
     void releaseNote(NoteSelectionInfo selection);
+    void deleteNote(int noteNum);
     NoteSelectionInfo attemptSelection(double normalizedX, double normalizedY);
     int getLength();
     int getHeight();
@@ -49,4 +50,6 @@ class ArpPattern {
     std::vector<std::uint8_t> messageCounts;
     std::bitset<resolution * (maxLengthInBeats + 1)> hasEventBuffer;
     void resetMessages();
+    int CLIP_HEIGHT = 4;
+    int clipNoteNum(int noteNum);
 };

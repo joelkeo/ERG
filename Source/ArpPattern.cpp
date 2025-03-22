@@ -87,6 +87,7 @@ void ArpPattern::addNote(double normalizedX, double normalizedY) {
 
 void ArpPattern::moveNote(NoteSelectionInfo selection, double normalizedX, double normalizedY,
                           double xDelta) {
+    // I guess this noteNum means index hahahaha
     int noteIndex = selection.noteNum;
     ArpNote& note = notes[noteIndex];
     if (selection.isEnd) {
@@ -95,14 +96,30 @@ void ArpPattern::moveNote(NoteSelectionInfo selection, double normalizedX, doubl
         note.currentEnd = rangedNewEnd;
     }
     else {
+        int noteLength = note.currentEnd - note.currentStart;
         int newNoteNum = normalizedYToNoteNum(normalizedY);
+        DBG("NEW NOTE NUM: " << newNoteNum);
+        if (newNoteNum > 4){
+            newNoteNum  = selection.startNote + (newNoteNum - selection.startNote);
+        }
         int scaledDelta = xDelta * patternLength;
         int unrangedNewStart = note.stableStart + scaledDelta;
         int unrangedNewEnd = note.stableEnd + scaledDelta;
-        int rangedNewStart = std::min(std::max(unrangedNewStart, 0), patternLength - 2);
-        int rangedNewEnd = std::min(std::max(unrangedNewEnd, rangedNewStart), patternLength - 1);
-        note.currentStart = rangedNewStart;
-        note.currentEnd = rangedNewEnd;
+        // too far left case
+        if (unrangedNewStart <= 0) {
+            note.currentStart = 0;
+            note.currentEnd = noteLength;
+        }
+        // too far right case
+        else if (unrangedNewEnd >= patternLength) {
+            note.currentEnd = patternLength;
+            note.currentStart = patternLength - noteLength;
+        }
+        // normal case
+        else {
+            note.currentStart = unrangedNewStart;
+            note.currentEnd = unrangedNewEnd;
+        }
         note.noteNum = newNoteNum;
     }
     resetMessages();
@@ -153,12 +170,22 @@ NoteSelectionInfo ArpPattern::attemptSelection(double normalizedX, double normal
         ArpNote& note = notes[i];
         int endPrecision = 1;
         // first consider note end
-        if (note.noteNum == noteNum && endPrecision >= std::abs(scaledX - note.currentEnd)) {
-            return NoteSelectionInfo(i, true);
+        int clippedNoteNum = clipNoteNum(note.noteNum);
+        if (clippedNoteNum == noteNum && endPrecision >= std::abs(scaledX - note.currentEnd)) {
+            return NoteSelectionInfo(i, true, noteNum);
         }
-        if (note.noteNum == noteNum && scaledX > note.currentStart && scaledX < note.currentEnd) {
-            return NoteSelectionInfo(i, false);
+        if (clippedNoteNum == noteNum && scaledX > note.currentStart && scaledX < note.currentEnd) {
+            return NoteSelectionInfo(i, false, noteNum);
         }
     }
     return NoteSelectionInfo();
+}
+
+void ArpPattern::deleteNote(int noteNum) {
+    notes.erase(notes.begin() + noteNum);
+    resetMessages();
+}
+
+int ArpPattern::clipNoteNum(int noteNum) {
+    return std::min(CLIP_HEIGHT, noteNum);
 }

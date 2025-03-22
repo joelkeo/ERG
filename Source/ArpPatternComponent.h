@@ -28,4 +28,5 @@ public juce::Timer{
     NoteSelectionInfo selection;
     double getNormalizedX(int x);
     double getNormalizedY(int y);
+    juce::String noteNumToString(int num);
 };

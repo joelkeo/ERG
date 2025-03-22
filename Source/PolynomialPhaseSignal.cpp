@@ -65,6 +65,6 @@ std::function<double(double)> PolynomialPhaseSignal::getRateFormula() {
     double p = powerParameter;
     double a = (r * l - z) / - (std::pow(l, p));
     return [a, r, l, p](double x) {
-        return a * p * std::pow(l-x,p-1) + r;
+        return a * p * std::pow(l-x ,p-1) + r;
     };
 }

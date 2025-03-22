@@ -27,8 +27,6 @@ hostInfo(hostInfo) {
 int VRPS::getLength() {
     double bpm = hostInfo.bpm;
     double sampleRate = hostInfo.sampleRate;
-    DBG("length param");
-    DBG(lengthParameter);
     return (lengthParameter.get() / (bpm / 60.)) * sampleRate;
 }
 int VRPS::getLengthBeats() {

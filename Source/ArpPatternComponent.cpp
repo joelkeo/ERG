@@ -17,18 +17,19 @@ pattern(communicators.arpPattern){
 }
 
 void ArpPatternComponent::paint(juce::Graphics& g) {
+    g.fillAll(juce::Colour(242,240,241));
     juce::Colour noteColor = editorInfo.secondary();
     juce::Colour noteHighlightedColor = editorInfo.secondary();
-    juce::Colour verticalLinesColor = editorInfo.tertiary();
+    juce::Colour verticalLinesColor = juce::Colour(58,42,51);
     juce::Colour horizantalLinesColor = editorInfo.border();
-    juce::Colour shadedBarsColor = juce::Colour(236,222,224);
+    juce::Colour shadedBarsColor = juce::Colour(246,233,239);
     double width = getWidth();
     double height = getHeight();
     double patternLength = pattern.getLength();
     int patternHeight = pattern.getHeight();
     int singleNoteHeight = height / patternHeight;
     // SHADINGS
-    g.setColour(shadedBarsColor.withAlpha(.4f));
+    g.setColour(shadedBarsColor.withAlpha(.8f));
     for (int i = 0; i <= patternHeight; i+=2) {
         int y = i * singleNoteHeight;
         g.fillRect(0, y, width, singleNoteHeight);
@@ -40,7 +41,16 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
         g.drawLine(0, y, width, y);
     }
     // VERTICAL LINES
-    g.setColour(verticalLinesColor.withAlpha(.5f));
+    int powers = 10;
+    for (int power = 0; power < powers; power++) {
+        g.setColour(verticalLinesColor.withAlpha((float) std::pow(.5f, power)));
+        int numLines = std::pow(2, power);
+        float c = width / numLines;
+        for (int line = 0; line < numLines; line+= 2) {
+            int xPos = c * line;
+            g.drawLine(xPos, 0, xPos, height);
+        }
+    }
     int halfWidth = width /2;
     g.drawLine(halfWidth, 0, halfWidth, height);
     g.setColour(verticalLinesColor.withAlpha(.2f));
@@ -55,28 +65,28 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
         int noteStartX = (((double) noteCurrentStart) / patternLength) * width;
         int noteLength = noteCurrentEnd - noteCurrentStart;
         int noteWidth = (((double) noteLength) / ((double) patternLength)) * width;
-        int noteStartY = height - (singleNoteHeight * (note.noteNum + 1));
+        int clippedNoteNum = std::min(note.noteNum, 4);
+        int noteStartY = height - (singleNoteHeight * (clippedNoteNum + 1));
+        juce::Rectangle<int> noteBounds(noteStartX, noteStartY, noteWidth, singleNoteHeight);
+        // BEING PLAYED TODO: better logic for this so I don't MISS notes
         if (noteCurrentStart <= patternPosition && noteCurrentEnd >= patternPosition) {
-            g.setColour(noteHighlightedColor.withAlpha(.3f));
+            g.setColour(noteHighlightedColor.withAlpha(.15f));
             g.fillRect(noteStartX, noteStartY, noteWidth, singleNoteHeight);
-            g.setColour(noteHighlightedColor.withAlpha(.7f));
-            g.drawRect(noteStartX, noteStartY, noteWidth, singleNoteHeight, 2);
+            g.setColour(noteHighlightedColor.withAlpha(.99f));
+            g.drawRect(noteBounds, 2);
         }
         else {
-            g.setColour(noteColor.withAlpha(.2f));
-            g.fillRect(noteStartX, noteStartY, noteWidth, singleNoteHeight);
-            g.setColour(noteColor.withAlpha(.5f));
-            g.drawRect(noteStartX, noteStartY, noteWidth, singleNoteHeight, 2);
+            g.setColour(noteColor.withAlpha(.075f));
+            g.fillRect(noteBounds);
+            g.setColour(noteColor.withAlpha(.87f));
+            g.drawRect(noteBounds, 2);
         }
+        g.drawText(noteNumToString(note.noteNum), noteBounds, juce::Justification::centred);
+        DBG("DRAWING NOTE OF NUM: " << note.noteNum);
     }
     // POSITION
     g.setColour(editorInfo.highlight().withAlpha(.5f));
     int x = (((double) patternPosition) / patternLength) * width;
-    if (patternPosition > 0) {
-        DBG("Pattern position");
-        DBG(patternPosition);
-        DBG(x);
-    }
     g.drawLine(x, 0, x, height, 4);
 }
 
@@ -119,6 +129,24 @@ void ArpPatternComponent::mouseDoubleClick(const juce::MouseEvent& e) {
     double height = getHeight();
     double x = ((double) position.getX()) / width;
     double y = 1. - ((double) position.getY()) / height;
+    // attempts to select a note, if one is there, delete it
+    NoteSelectionInfo attemptedSelection = pattern.attemptSelection(x, y);
+    if (attemptedSelection.hasNote) {
+        DBG("selection HAD IT");
+        pattern.deleteNote(attemptedSelection.noteNum);
+        selection.hasNote = false;
+        return;
+    }
     pattern.addNote(x, y);
+    // will select the newly added note
     pattern.attemptSelection(x, y);
+}
+
+juce::String ArpPatternComponent::noteNumToString(int num) {
+    if (num == 0) {
+        return "All";
+    }
+    else {
+        return juce::String(num);
+    }
 }
