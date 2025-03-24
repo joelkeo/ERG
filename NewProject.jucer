@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="CqW6zE" name="RhythmGenerator" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="InfernoAudio"
-              companyWebsite="inferno-audio.com" companyEmail="infernoedm@gmail.com"
-              pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Inferno Audio"
+              companyWebsite="infernoaud.io" companyEmail="infernoedm@gmail.com"
+              pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginManufacturerCode="Infe" pluginManufacturer="Inferno Audio">
   <MAINGROUP id="OPhjVd" name="RhythmGenerator">
     <GROUP id="{385269A0-650A-E43B-69BA-D41DE2F33268}" name="Source">
       <GROUP id="{0D829AD3-BCE4-1767-9DBA-FA5E4260B7F4}" name="Processor">

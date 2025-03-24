@@ -47,16 +47,16 @@
  #define JucePlugin_Desc                   "RhythmGenerator"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "InfernoAudio"
+ #define JucePlugin_Manufacturer           "Inferno Audio"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    "inferno-audio.com"
+ #define JucePlugin_ManufacturerWebsite    "infernoaud.io"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
  #define JucePlugin_ManufacturerEmail      "infernoedm@gmail.com"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
- #define JucePlugin_ManufacturerCode       0x4d616e75
+ #define JucePlugin_ManufacturerCode       0x496e6665
 #endif
 #ifndef  JucePlugin_PluginCode
  #define JucePlugin_PluginCode             0x43717736
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "InfernoAudio: RhythmGenerator"
+ #define JucePlugin_IAAName                "Inferno Audio: RhythmGenerator"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
