@@ -17,12 +17,12 @@ pattern(communicators.arpPattern){
 }
 
 void ArpPatternComponent::paint(juce::Graphics& g) {
-    g.fillAll(juce::Colour(242,240,241));
+    g.fillAll(juce::Colour(249,196,238));
     juce::Colour noteColor = editorInfo.secondary();
     juce::Colour noteHighlightedColor = editorInfo.secondary();
     juce::Colour verticalLinesColor = juce::Colour(58,42,51);
     juce::Colour horizantalLinesColor = editorInfo.border();
-    juce::Colour shadedBarsColor = juce::Colour(246,233,239);
+    juce::Colour shadedBarsColor = juce::Colour(251,180,236);
     double width = getWidth();
     double height = getHeight();
     double patternLength = pattern.getLength();
@@ -43,7 +43,7 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
     // VERTICAL LINES
     int powers = 10;
     for (int power = 0; power < powers; power++) {
-        g.setColour(verticalLinesColor.withAlpha((float) std::pow(.5f, power)));
+        g.setColour(verticalLinesColor.withAlpha((float) std::pow(.5f, power) * .7f));
         int numLines = std::pow(2, power);
         float c = width / numLines;
         for (int line = 0; line < numLines; line+= 2) {
@@ -51,6 +51,14 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
             g.drawLine(xPos, 0, xPos, height);
         }
     }
+    // TESTING OUT LABELLING 1 BETA
+    g.setColour(juce::Colour(196,100,172).withAlpha(.8f));
+    g.setFont(juce::Font(12.f));
+    g.drawText("1 beat", getLocalBounds().reduced(2).removeFromRight(90), juce::Justification::topRight);
+    g.setColour(juce::Colour(196,100,172).withAlpha(.6f));
+    g.setFont(juce::Font(8.f));
+    g.drawText("1/2 beat", getLocalBounds().removeFromLeft(width / 2).reduced(2).removeFromRight(90), juce::Justification::topRight);
+    // whhhhh
     int halfWidth = width /2;
     g.drawLine(halfWidth, 0, halfWidth, height);
     g.setColour(verticalLinesColor.withAlpha(.2f));
@@ -58,6 +66,7 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
     g.drawLine(quarterWidth, 0, quarterWidth, height);
     g.drawLine(3 * quarterWidth, 0, 3 * quarterWidth, height);
     // NOTES
+    g.setFont(juce::Font(16.f));
     int patternPosition = pattern.getPosition();
     for (ArpNote& note : pattern.getNotes()) {
         int noteCurrentStart = note.currentStart;
@@ -82,12 +91,15 @@ void ArpPatternComponent::paint(juce::Graphics& g) {
             g.drawRect(noteBounds, 2);
         }
         g.drawText(noteNumToString(note.noteNum), noteBounds, juce::Justification::centred);
-        DBG("DRAWING NOTE OF NUM: " << note.noteNum);
+        // DBG("DRAWING NOTE OF NUM: " << note.noteNum);
+        // BORDER
+        g.setColour(juce::Colour(102,74,97));
+        g.drawRect(getLocalBounds(), 1);
     }
     // POSITION
-    g.setColour(editorInfo.highlight().withAlpha(.5f));
-    int x = (((double) patternPosition) / patternLength) * width;
-    g.drawLine(x, 0, x, height, 4);
+    g.setColour(editorInfo.highlight().withAlpha(.7f));
+    double x = (((double) patternPosition) / patternLength) * width;
+    g.drawLine(x, 0.f, x, height, 2.f);
 }
 
 void ArpPatternComponent::timerCallback() {

@@ -25,4 +25,7 @@ class MidiScheduler {
     bool on = false;
     int note;
     std::set<int> noteSet;
+    // all the notes to turn off in the event of a PhaseSignal stop Event
+    std::set<int> turnOffNoteSet;
+    juce::MidiBuffer orderMessages(juce::MidiBuffer inputBuffer);
 };

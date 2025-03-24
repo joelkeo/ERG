@@ -9,10 +9,10 @@
 */
 
 #include "VRPS.h"
-VRPS::VRPS(juce::AudioParameterFloat& lengthParameter,
-           juce::AudioParameterFloat& endRateParameter,
-           juce::AudioParameterInt& zParameter,
-           juce::AudioParameterFloat& powerParameter,
+VRPS::VRPS(MyParameter& lengthParameter,
+           MyParameter& endRateParameter,
+           MyParameter& zParameter,
+           MyParameter& powerParameter,
            HostInfo& hostInfo) : lengthParameter(lengthParameter),
 endRateParameter(endRateParameter),
 zParameter(zParameter),
@@ -27,22 +27,22 @@ hostInfo(hostInfo) {
 int VRPS::getLength() {
     double bpm = hostInfo.bpm;
     double sampleRate = hostInfo.sampleRate;
-    return (lengthParameter.get() / (bpm / 60.)) * sampleRate;
+    return (lengthParameter.getAdjustedValue() / (bpm / 60.)) * sampleRate;
 }
 int VRPS::getLengthBeats() {
-    return lengthParameter;
+    return lengthParameter.getAdjustedValue();
 }
 double VRPS::getEndRateBeats() {
-    return endRateParameter;
+    return endRateParameter.getAdjustedValue();
 }
 double VRPS::getEndRate() {
     double bpm = hostInfo.bpm;
     double sampleRate = hostInfo.sampleRate;
-    double result = (endRateParameter.get() * (bpm / 60.)) / sampleRate;
+    double result = (endRateParameter.getAdjustedValue() * (bpm / 60.)) / sampleRate;
     return result;
 }
 int VRPS::getZ() {
-    return zParameter.get();
+    return zParameter.getAdjustedValue();
 }
 void VRPS::addListener(EnvelopeListener* listener) {
     listeners.push_back(listener);
@@ -54,6 +54,11 @@ void VRPS::removeListener(EnvelopeListener* listener) {
     if (it != listeners.end()) {listeners.erase(it);}
 }
 void VRPS::formulaChanged() {
+    DBG("FORMULA CHANGED###");
+    DBG("LENGTH: " << lengthParameter.getAdjustedValue());
+    DBG("ENDRATE: " << endRateParameter.getAdjustedValue());
+    DBG("z " << zParameter.getAdjustedValue());
+    DBG("Power " << powerParameter.getAdjustedValue());
     for (auto listener : listeners) {
         listener->updateFormula(getPhaseFormula(), getRateFormula(), getLengthBeats());
         listener->clearPosition();

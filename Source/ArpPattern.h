@@ -27,6 +27,8 @@ class ArpPattern {
     int getHeight();
     int getPosition();
     std::vector<ArpNote> getNotes();
+    void setToJSON(juce::var json);
+    juce::var getJSON();
     private:
     // messages in the arp buffer
     juce::MidiBuffer messages;

@@ -11,10 +11,11 @@
 #pragma once
 #include <JuceHeader.h>
 #include "EditorInfo.h"
+#include "MyParameter.h"
 class BigKnob : public juce::Slider {
     public:
     BigKnob(EditorInfo& editorInfo,
-            juce::RangedAudioParameter& parameter);
+            MyParameter& parameter);
     void paint(juce::Graphics& g) override;
     private:
     EditorInfo& editorInfo;

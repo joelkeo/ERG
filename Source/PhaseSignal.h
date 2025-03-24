@@ -15,12 +15,13 @@
 #include "PolynomialPhaseSignal.h"
 #include "HostInfo.h"
 #include "VRPSEnvelopeAttachment.h"
+#include "MyParameter.h"
 class PhaseSignal {
     public:
-    PhaseSignal(juce::AudioParameterFloat& lengthParameter,
-                juce::AudioParameterFloat& endRateParameter,
-                juce::AudioParameterInt& zParameter,
-                juce::AudioParameterFloat& powerParameter,
+    PhaseSignal(MyParameter& lengthParameter,
+                MyParameter& endRateParameter,
+                MyParameter& zParameter,
+                MyParameter& powerParameter,
                 HostInfo& hostInfo);
     double* process(std::vector<PhaseSignalEvent>, int length);
     double phaseBuffer[10000];
@@ -32,4 +33,8 @@ class PhaseSignal {
     void clearBuffer(int length);
     private:
     HostInfo& hostInfo;
+    void requestSignal(double* buffer,
+                       int formulaStart,
+                       int bufferStart,
+                       int bufferLength);
 };

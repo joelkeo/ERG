@@ -150,7 +150,7 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         hostInfo.bpm = bpmFromHost;
     }
     synth.process(buffer, midiMessages, buffer.getNumSamples());
-    DBG("FPN: " << juce::File::getSpecialLocation(juce::File::commonDocumentsDirectory).getFullPathName());
+    // DBG("FPN: " << juce::File::getSpecialLocation(juce::File::commonDocumentsDirectory).getFullPathName());
 }
 
 //==============================================================================
@@ -168,7 +168,7 @@ juce::AudioProcessorEditor* NewProjectAudioProcessor::createEditor()
 void NewProjectAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     juce::DynamicObject::Ptr jsonState = new juce::DynamicObject();
-    // SECTION 3: REGISTERED PARAMETERS ------------------------------
+    // SECTION 1: REGISTERED PARAMETERS ------------------------------
     for (auto parameter : getParameters()) {
         auto* idParameter = dynamic_cast<juce::AudioProcessorParameterWithID*>(parameter);
         if (idParameter) {
@@ -176,6 +176,10 @@ void NewProjectAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
             jsonState->setProperty(name, idParameter->getValue());
         }
     }
+    
+    // SECTION 2: ARPEGGIATOR PATTERN ---------------------------------
+    jsonState->setProperty("arpNoteList", synth.arpPattern.getJSON());
+    // BUILD
     juce::var jsonData = juce::var(jsonState.get());
     juce::String jsonString = juce::JSON::toString(jsonData);
     destData.append(jsonString.toRawUTF8(), jsonString.getNumBytesAsUTF8());
@@ -196,6 +200,10 @@ void NewProjectAudioProcessor::setStateInformation (const void* data, int sizeIn
             idParameter->sendValueChangedMessageToListeners(value);
         }
     }
+    // SECTION 2: ARPEGGIATOR PATTERN ---------------------------------
+    juce::var arpNoteList = jsonState->getProperty("arpNoteList");
+    DBG("ARP NOTE LIST: " << arpNoteList.toString());
+    synth.arpPattern.setToJSON(arpNoteList);
 }
 
 //==============================================================================

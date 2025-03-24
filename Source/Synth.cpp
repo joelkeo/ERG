@@ -10,10 +10,10 @@
 
 #include "Synth.h"
 
-Synth::Synth(juce::AudioParameterFloat& lengthParameter,
-             juce::AudioParameterFloat& endRateParameter,
-             juce::AudioParameterInt& zParameter,
-             juce::AudioParameterFloat& powerParameter,
+Synth::Synth(MyParameter& lengthParameter,
+             MyParameter& endRateParameter,
+             MyParameter& zParameter,
+             MyParameter& powerParameter,
              HostInfo& hostInfo) :
 arpPattern(hostInfo),
 phaseSignal(lengthParameter, endRateParameter, zParameter, powerParameter, hostInfo),
@@ -33,7 +33,15 @@ void Synth::process(juce::AudioBuffer<float>& audioBuffer, juce::MidiBuffer& mid
         a[i] = std::max(0., phaseSignalBuffer[i]);
     }
     */
+    // HANDLING DANGLING NOTES:::::
     juce::MidiBuffer& arpMidi = arpPattern.process(phaseSignalBuffer, length);
+    for (PhaseSignalEvent event : events) {
+        std::set<int> noteOffs = event.noteOffSet;
+        int position = event.position;
+        for (int noteNum : noteOffs) {
+            midi.addEvent(juce::MidiMessage::noteOff(1, noteNum, 1.0f), position);
+        }
+    }
     midiScheduler.process(arpMidi, midi);
 }
 ProcessorCommunicators& Synth::getCommunicators() {

@@ -9,10 +9,10 @@
 */
 
 #include "PhaseSignal.h"
-PhaseSignal::PhaseSignal(juce::AudioParameterFloat& lengthParameter,
-            juce::AudioParameterFloat& endRateParameter,
-            juce::AudioParameterInt& zParameter,
-                         juce::AudioParameterFloat& powerParameter,
+PhaseSignal::PhaseSignal(MyParameter& lengthParameter,
+                         MyParameter& endRateParameter,
+                         MyParameter& zParameter,
+                         MyParameter& powerParameter,
             HostInfo& hostInfo) :
 vrps(lengthParameter, endRateParameter, zParameter, powerParameter, hostInfo),
 hostInfo(hostInfo),
@@ -22,18 +22,33 @@ double* PhaseSignal::process(std::vector<PhaseSignalEvent> events, int length) {
     // simple phase signal event approach
     clearBuffer(length);
     bool justStarted = false;
+    int lastStart = 0;
     for (PhaseSignalEvent event : events) {
         if (event.turnOn) {
-            startPosition = 0;
+            lastStart = event.position;
             isOn = true;
-            justStarted = true;
-            DBG("START EVENT");
         }
         else {
+            int endPosition = event.position;
+            requestSignal(phaseBuffer,
+                           startPosition,
+                           lastStart,
+                           endPosition - lastStart);
+            startPosition += (endPosition - lastStart);
+            vrps.stop();
+            startPosition = 0;
             isOn = false;
             DBG("END EVENT");
         }
     }
+    if (! isOn) {return phaseBuffer;}
+    requestSignal(phaseBuffer,
+                   startPosition,
+                   lastStart,
+                   length - lastStart);
+    startPosition += (length - lastStart);
+    return phaseBuffer;
+    /*
     if (! isOn) {return phaseBuffer;}
     int expLength = vrps.getLength();
     int endPosition = startPosition + length;
@@ -51,10 +66,30 @@ double* PhaseSignal::process(std::vector<PhaseSignalEvent> events, int length) {
     }
     startPosition += length;
     return phaseBuffer;
+     */
 }
 
 void PhaseSignal::clearBuffer(int length) {
     for (int i = 0 ; i < length; i++) {
         phaseBuffer[i] = -1.;
+    }
+}
+
+// HANDLES TRUNCATING CALL TO VRPS
+void PhaseSignal::requestSignal(double* buffer,
+                   int formulaStart,
+                   int bufferStart,
+                   int bufferLength) {
+    // no truncating case
+    if (! (bufferLength + formulaStart > vrps.getLength())) {
+        vrps.getSignal(buffer, formulaStart, bufferStart, bufferLength);
+    }
+    // yes truncating case
+    else {
+        int newLength = vrps.getLength() - formulaStart;
+        vrps.getSignal(buffer, formulaStart, bufferStart, newLength);
+        isOn = false;
+        startPosition = 0;
+        vrps.stop();
     }
 }

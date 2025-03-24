@@ -9,20 +9,22 @@
 */
 
 #include "ExponentialPhaseSignal.h"
-
-ExponentialPhaseSignal::ExponentialPhaseSignal(juce::AudioParameterFloat& lengthParameter,
-                                               juce::AudioParameterFloat& endRateParameter,
-                                               juce::AudioParameterInt& zParameter,
-                                               juce::AudioParameterFloat& powerParameter,
+ExponentialPhaseSignal::ExponentialPhaseSignal(MyParameter& lengthParameter,
+                                               MyParameter& endRateParameter,
+                                               MyParameter& zParameter,
+                                               MyParameter& powerParameter,
                                                HostInfo& hostInfo) :
 VRPS(lengthParameter, endRateParameter, zParameter, powerParameter, hostInfo) {}
 
-double* ExponentialPhaseSignal::getSignal(double* buffer, int startPosition, int length) {
+double* ExponentialPhaseSignal::getSignal(double* buffer,
+                                          int formulaStartPosition,
+                                          int bufferStartPosition,
+                                          int bufferLength) {
     double s = getS();
     double c = getC();
-    for (int i = 0; i < length; i++) {
-        double nonNormalized = s * log(c * ((double) (i + startPosition)) + 1);
-        buffer[i] = fmod(nonNormalized, 1.);
+    for (int i = 0; i < bufferLength; i++) {
+        double nonNormalized = s * log(c * ((double) (i + formulaStartPosition)) + 1);
+        buffer[i + bufferStartPosition] = fmod(nonNormalized, 1.);
     }
     return buffer;
 }

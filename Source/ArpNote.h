@@ -20,4 +20,7 @@ class ArpNote {
     int stableStart;
     int stableEnd;
     float velocity;
+    // JSON SHIT
+    ArpNote(juce::var json);
+    juce::var getJSON();
 };

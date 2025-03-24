@@ -10,27 +10,30 @@
 
 #include "MidiScheduler.h"
 std::vector<PhaseSignalEvent> MidiScheduler::loadNewMidi(juce::MidiBuffer &midi, int length) {
-    if (! midi.isEmpty()) { DBG("loadNewMidi");}
-    for (const juce::MidiMessageMetadata metadata : midi) {
+    juce::MidiBuffer orderedMidi = orderMessages(midi);
+    // TODO: Guarantee invariant that noteoff messages always come first
+    std::vector<PhaseSignalEvent> events;
+    for (const juce::MidiMessageMetadata metadata : orderedMidi) {
         DBG("INPUT MIDI EVENT");
         juce::MidiMessage currentMessage = metadata.getMessage();
         note = currentMessage.getNoteNumber();
+        int position = currentMessage.getTimeStamp();
         if (currentMessage.isNoteOn()) {
+            on = true;
+            if (noteSet.empty()) {events.push_back(PhaseSignalEvent(position, true));}
             noteSet.insert(note);
+            turnOffNoteSet.insert(note);
         }
         else {
             noteSet.erase(note);
+            if (noteSet.empty()) {
+                events.push_back(PhaseSignalEvent(position, false, turnOffNoteSet));
+                on = false;
+                turnOffNoteSet.clear();
+            }
         }
     }
-    if (! on && ! noteSet.empty()) {
-        on = true;
-        return std::vector<PhaseSignalEvent>{PhaseSignalEvent(0, true)};
-    }
-    if (on && noteSet.empty()) {
-        on = false;
-        return std::vector<PhaseSignalEvent>{PhaseSignalEvent(0, false)};
-    }
-    return std::vector<PhaseSignalEvent>();
+    return events;
 }
 
 // ignore if there is already a live note
@@ -66,4 +69,36 @@ juce::MidiBuffer& MidiScheduler::process(juce::MidiBuffer& arpSignal, juce::Midi
         }
     }
     return outBuffer;
+}
+
+juce::MidiBuffer MidiScheduler::orderMessages(juce::MidiBuffer inputBuffer) {
+    juce::MidiBuffer outputBuffer;
+    int currentTimestamp = -1;
+    std::list<juce::MidiMessage> currentTimestampMessages;
+    for (const juce::MidiMessageMetadata metadata : inputBuffer) {
+        juce::MidiMessage message = metadata.getMessage();
+        int position = message.getTimeStamp();
+        if (position > currentTimestamp) {
+            // LOAD ALL OF THE LINK LIST INTO BUFFER AND CLEAR
+            for (juce::MidiMessage message : currentTimestampMessages) {
+                outputBuffer.addEvent(message, currentTimestamp);
+            }
+            currentTimestampMessages.clear();
+            currentTimestampMessages.push_back(message);
+            currentTimestamp = position;
+        }
+        else {
+            if (message.isNoteOff()) {
+                currentTimestampMessages.push_front(message);
+            }
+            else {
+                currentTimestampMessages.push_back(message);
+            }
+        }
+    }
+    // HANDLE LEFTOVERS
+    for (juce::MidiMessage message : currentTimestampMessages) {
+        outputBuffer.addEvent(message, currentTimestamp);
+    }
+    return outputBuffer;
 }

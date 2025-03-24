@@ -30,24 +30,28 @@ void EnvelopeComponent::paint(juce::Graphics& g) {
     juce::Colour phaseColor = editorInfo.secondary();
     juce::Colour phaseBoxColor = editorInfo.secondary();
     juce::Colour rateColor = juce::Colour(77,93,91);
-    g.fillAll(juce::Colour(242,240,241));
+    g.fillAll(juce::Colour(254,181,237).withAlpha(.5f));
+    g.fillAll(juce::Colour(255,219,247).withAlpha(.5f));
     // DRAW RATE LINE
     juce::PathStrokeType strokeType(1.0f, juce::PathStrokeType::curved);
     g.setColour(rateColor);
     g.strokePath(ratePath, strokeType);
     // FILL IN RATE PATH PORTION
-    g.saveState();
-    g.reduceClipRegion(0, 0, position, getHeight());
-    g.setColour(juce::Colour(235,163,217).withAlpha(.3f));
-    g.fillPath(ratePath);
-    g.restoreState();
+    if (showingPosition) {
+        g.saveState();
+        g.reduceClipRegion(0, 0, position, getHeight());
+        g.setColour(juce::Colour(235,163,217).withAlpha(.7f));
+        g.fillPath(ratePath);
+        g.restoreState();
+    }
     // DRAW PHASE LINES
-    g.setColour(phaseColor.withAlpha(.3f));
+    g.setColour(juce::Colour(102,74,97));
     double halfHeight = height / 2.;
     for (int i = 0; i < lineXPositions.size(); i++) {
         double x = lineXPositions[i] * width;
         double yScaling = lineYScalings[i];
         double yStart =  halfHeight * (1. - yScaling);
+        // g.drawRect(x, yStart, 3, height * yScaling, 1);
         g.drawLine(x, yStart, x, yStart + height * yScaling);
     }
     // HIGHLIGHT CURRENT PHASE PATTERN
@@ -65,10 +69,35 @@ void EnvelopeComponent::paint(juce::Graphics& g) {
         g.drawLine(position, 0, position, height, 1);
     }
     // AXIS LABELLING::
-    double yPosDelta = height / (maxRate / labelDelta);
-    for (double pos = 0; pos < maxRate; pos += labelDelta) {
-        double y = height - yPosDelta * pos;
-        g.drawLine(width - 10, y, width, y, 5);
+    juce::Colour axisColour = juce::Colour(141,96,130);
+    float alpha = .7f;
+    float alphaMult = .5f;
+    int maxPowerOfTwo = std::pow(2.f, std::floor(std::log2(maxRate)));
+    float scaleLinesScaling = height / maxRate;
+    float nonScaledJump = maxPowerOfTwo;
+    float lineWidth = std::sqrt(nonScaledJump) * 4.f;;
+    g.setColour(axisColour.withAlpha(alpha));
+    g.setFont(juce::Font(6 * std::pow(nonScaledJump, .25)));
+    g.drawText("* " + juce::String(maxPowerOfTwo),
+               width - lineWidth - 100,
+               height - scaleLinesScaling * nonScaledJump - 8,
+               95,
+               16,
+               juce::Justification::centredRight);
+    for (int i = 0; i < 4; i++) {
+        lineWidth = std::sqrt(nonScaledJump) * 4.f;
+        for (int step = 1; step * nonScaledJump <= maxRate; step+=2) {
+            g.setColour(axisColour.withAlpha(alpha));
+            g.drawHorizontalLine(height - scaleLinesScaling * nonScaledJump * step, width - lineWidth, width);
+            DBG("I: " << i);
+            DBG("STEP: " << step);
+            DBG("Y: " << scaleLinesScaling * nonScaledJump * step);
+        }
+        lineWidth *= .5f;
+        nonScaledJump *= .5f;
+        alpha *= alphaMult;
+    }
+        /*
         DBG("axis y");
         DBG(y);
         DBG("y pos delta");
@@ -77,7 +106,10 @@ void EnvelopeComponent::paint(juce::Graphics& g) {
         DBG(labelDelta);
         DBG("max rate");
         DBG(maxRate);
-    }
+         */
+    // BORDER
+    g.setColour(juce::Colour(102,74,97));
+    g.drawRect(getLocalBounds(), 1);
     // UNDO SCALING
     juce::AffineTransform inverseTransform = juce::AffineTransform::scale(1 / width, 1 / height);
     ratePath.applyTransform(inverseTransform);
@@ -101,7 +133,7 @@ void EnvelopeComponent::updateFormula(std::function<double(double)> phaseFormula
     double yScaling = 1 / maxY;
     double maxX = length;
     double xScaling = 1 / maxX;
-    int resolution = 100;
+    int resolution = 400;
     double xIncrement = ((double) length) / resolution;
     ratePath.clear();
     // PATH START

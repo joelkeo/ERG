@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "ExponentialPhaseSignal.h"
 #include "Synth.h"
+#include "MyParameter.h"
 
 //==============================================================================
 /**
@@ -59,10 +60,30 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     // Parameter
-    APF* lengthParameter = new APF(PID{"length",1}, "length", 1.f, 64.f, 8.f);
-    APF* endRateParameter = new APF(PID{"endRate",1}, "end rate", 0, 8.f, .25);
-    API* zParameter = new API(PID{"zParameter",1}, "oscillations", 1, 100, 1);
-    APF* powerParameter = new APF(PID{"powerParameter",1}, "power", 1, 5, 2.);
+    MyParameter* lengthParameter = new MyParameter("length",
+                                                   "Length",
+                                                   [](float x){return std::pow(2, 6 * x);},
+                                                   [](float x){return juce::String(x) + " beats";},
+                                                   .3333333f,
+                                                   6);
+    MyParameter* endRateParameter = new MyParameter("endRate",
+                                                   "End Rate",
+                                                   [](float x){return .125f * std::pow(2.f, 9.f*x);},
+                                                   [](float x){return "*" + juce::String(x);},
+                                                    .22222222f,
+                                                    9);
+    MyParameter* zParameter = new MyParameter("z",
+                                              "oscillations",
+                                              [](float x){return 1.f + x * 99.f;},
+                                              [](float x){return juce::String(x) + " oscillations";},
+                                              .1111111f,
+                                              99);
+    MyParameter* powerParameter = new MyParameter("power",
+                                                   "power",
+                                                   [](float x){return 1.f + x * 4.f;},
+                                                   [](float x){return "x^" + juce::String(x);},
+                                                  .25f,
+                                                  64);
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessor)

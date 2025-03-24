@@ -7,6 +7,8 @@
   <MAINGROUP id="OPhjVd" name="RhythmGenerator">
     <GROUP id="{385269A0-650A-E43B-69BA-D41DE2F33268}" name="Source">
       <GROUP id="{0D829AD3-BCE4-1767-9DBA-FA5E4260B7F4}" name="Processor">
+        <FILE id="qLWtOU" name="MyParameter.cpp" compile="1" resource="0" file="Source/MyParameter.cpp"/>
+        <FILE id="ojYCuf" name="MyParameter.h" compile="0" resource="0" file="Source/MyParameter.h"/>
         <FILE id="zLR2mT" name="ArpNote.cpp" compile="1" resource="0" file="Source/ArpNote.cpp"/>
         <FILE id="IRSvZo" name="ArpNote.h" compile="0" resource="0" file="Source/ArpNote.h"/>
         <FILE id="P6MPJX" name="ProcessorCommunicators.cpp" compile="1" resource="0"

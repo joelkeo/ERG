@@ -13,15 +13,19 @@
 #include <cmath>
 #include "HostInfo.h"
 #include "VRPS.h"
+#include "MyParameter.h"
 class ExponentialPhaseSignal : VRPS {
 public:
-    ExponentialPhaseSignal(juce::AudioParameterFloat& lengthParameter,
-    juce::AudioParameterFloat& endRateParameter,
-    juce::AudioParameterInt& zParameter,
-    juce::AudioParameterFloat& powerParameter,
+    ExponentialPhaseSignal(MyParameter& lengthParameter,
+                           MyParameter& endRateParameter,
+                           MyParameter& zParameter,
+                           MyParameter& powerParameter,
                            HostInfo& hostInfo);
     double getLength();
-    double* getSignal(double* buffer, int startPosition, int length) override;
+    double* getSignal(double* buffer,
+                      int formulaStartPosition,
+                      int bufferStartPosition,
+                      int bufferLength) override;
 private:
     // no reason its called S, just called S
     double getS();

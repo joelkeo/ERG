@@ -92,7 +92,7 @@ void ArpPattern::moveNote(NoteSelectionInfo selection, double normalizedX, doubl
     ArpNote& note = notes[noteIndex];
     if (selection.isEnd) {
         int unrangedNewEnd = normalizedX * patternLength;
-        int rangedNewEnd = std::min(std::max(unrangedNewEnd, note.currentStart), patternLength - 1);
+        int rangedNewEnd = std::min(std::max(unrangedNewEnd, note.currentStart), patternLength);
         note.currentEnd = rangedNewEnd;
     }
     else {
@@ -188,4 +188,24 @@ void ArpPattern::deleteNote(int noteNum) {
 
 int ArpPattern::clipNoteNum(int noteNum) {
     return std::min(CLIP_HEIGHT, noteNum);
+}
+
+void ArpPattern::setToJSON(juce::var json) {
+    notes.clear();
+    jassert(json.isArray());
+    juce::Array<juce::var>* arr = json.getArray();
+    for (auto note: *arr) {
+        DBG("INDIVIDUAL NOTE: " << note.toString());
+        notes.push_back(ArpNote(note));
+    }
+    // resets midi messages based on new notes
+    resetMessages();
+}
+
+juce::var ArpPattern::getJSON() {
+    juce::Array<juce::var> arr;
+    for (auto note : notes) {
+        arr.add(note.getJSON());
+    }
+    return arr;
 }

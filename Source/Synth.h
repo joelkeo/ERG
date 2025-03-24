@@ -16,19 +16,20 @@
 #include "PhaseSignalEvent.h"
 #include "HostInfo.h"
 #include "ProcessorCommunicators.h"
+#include "MyParameter.h"
 class Synth {
     public:
-    Synth(juce::AudioParameterFloat& lengthParameter,
-          juce::AudioParameterFloat& endRateParameter,
-          juce::AudioParameterInt& zParameter,
-          juce::AudioParameterFloat& powerParameter,
+    Synth(MyParameter& lengthParameter,
+          MyParameter& endRateParameter,
+          MyParameter& zParameter,
+          MyParameter& powerParameter,
           HostInfo& hostInfo);
     // puts out midi into in midi buffer
     void process(juce::AudioBuffer<float>& audioBuffer, juce::MidiBuffer& midi, int length);
     ProcessorCommunicators& getCommunicators();
+    ArpPattern arpPattern;
     private:
     MidiScheduler midiScheduler;
-    ArpPattern arpPattern;
     PhaseSignal phaseSignal;
     HostInfo& hostInfo;
     // really should be last -------------------------

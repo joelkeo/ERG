@@ -21,23 +21,15 @@ pattern(editorInfo, communicators)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 425);
+    setSize (800, 410);
     DBG("editor constructed");
     // power slider
-    powerSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    powerSlider.setRange(1, 5);
     addAndMakeVisible(powerSlider);
     // z slider
-    zSlider.setSliderStyle(juce::Slider::LinearVertical);
-    zSlider.setRange(1, 100, 1);
     addAndMakeVisible(zSlider);
     // length slider
-    lengthSlider.setSliderStyle(juce::Slider::LinearVertical);
-    lengthSlider.setRange(1, 16, 1);
     addAndMakeVisible(lengthSlider);
     // end rate combo box
-    endRateSlider.setSliderStyle(juce::Slider::LinearVertical);
-    endRateSlider.setRange(0, 8, .25);
     addAndMakeVisible(endRateSlider);
     // keybaord
     addAndMakeVisible(&envelope);

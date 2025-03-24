@@ -12,15 +12,20 @@
 #include "HostInfo.h"
 #include "EnvelopeListener.h"
 #include <JuceHeader.h>
+#include "MyParameter.h"
+
 class VRPS : juce::AudioProcessorParameter::Listener {
     public:
     virtual ~VRPS() {}
-    VRPS(juce::AudioParameterFloat& lengthParameter,
-         juce::AudioParameterFloat& endRateParameter,
-         juce::AudioParameterInt& zParameter,
-         juce::AudioParameterFloat& powerParameter,
+    VRPS(MyParameter& lengthParameter,
+         MyParameter& endRateParameter,
+         MyParameter& zParameter,
+         MyParameter& powerParameter,
          HostInfo& hostInfo);
-    virtual double* getSignal(double* buffer, int startPosition, int length) = 0;
+    virtual double* getSignal(double* buffer,
+                              int formulaStartPosition,
+                              int bufferStartPosition,
+                              int bufferLength) = 0;
     int getLength();
     int getLengthBeats();
     void addListener(EnvelopeListener* listener);
@@ -36,10 +41,10 @@ class VRPS : juce::AudioProcessorParameter::Listener {
     double getEndRate();
     double getEndRateBeats();
     int getZ();
-    juce::AudioParameterFloat& lengthParameter;
-    juce::AudioParameterFloat& endRateParameter;
-    juce::AudioParameterInt& zParameter;
-    juce::AudioParameterFloat& powerParameter;
+    MyParameter& lengthParameter;
+    MyParameter& endRateParameter;
+    MyParameter& zParameter;
+    MyParameter& powerParameter;
     HostInfo& hostInfo;
     private:
     std::vector<EnvelopeListener*> listeners;
