@@ -16,6 +16,10 @@ pattern(communicators.arpPattern){
     startTimer(1000 / 60);
 }
 
+ArpPatternComponent::~ArpPatternComponent() {
+    stopTimer();
+}
+
 void ArpPatternComponent::paint(juce::Graphics& g) {
     g.fillAll(juce::Colour(249,196,238));
     juce::Colour noteColor = editorInfo.secondary();

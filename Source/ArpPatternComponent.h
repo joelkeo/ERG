@@ -16,6 +16,7 @@ public juce::Timer{
     public:
     ArpPatternComponent(EditorInfo& editorInfo,
                         ProcessorCommunicators& communicators);
+    ~ArpPatternComponent();
     void paint(juce::Graphics& g) override;
     void timerCallback() override;
     void mouseDown(const juce::MouseEvent& e) override;

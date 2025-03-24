@@ -41,10 +41,10 @@
  #define JucePlugin_Enable_ARA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "RhythmGenerator"
+ #define JucePlugin_Name                   "Inertia"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "RhythmGenerator"
+ #define JucePlugin_Desc                   "Inertia"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Inferno Audio"
@@ -101,19 +101,19 @@
  #define JucePlugin_AUSubType              JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         RhythmGeneratorAU
+ #define JucePlugin_AUExportPrefix         InertiaAU
 #endif
 #ifndef  JucePlugin_AUExportPrefixQuoted
- #define JucePlugin_AUExportPrefixQuoted   "RhythmGeneratorAU"
+ #define JucePlugin_AUExportPrefixQuoted   "InertiaAU"
 #endif
 #ifndef  JucePlugin_AUManufacturerCode
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.InfernoAudio.RhythmGenerator
+ #define JucePlugin_CFBundleIdentifier     com.InfernoAudio.Inertia
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.InfernoAudio.RhythmGenerator
+ #define JucePlugin_AAXIdentifier          com.InfernoAudio.Inertia
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "Inferno Audio: RhythmGenerator"
+ #define JucePlugin_IAAName                "Inferno Audio: Inertia"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
@@ -152,10 +152,10 @@
  #define JucePlugin_ARATransformationFlags  0
 #endif
 #ifndef  JucePlugin_ARAFactoryID
- #define JucePlugin_ARAFactoryID           "com.InfernoAudio.RhythmGenerator.factory"
+ #define JucePlugin_ARAFactoryID           "com.InfernoAudio.Inertia.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.InfernoAudio.RhythmGenerator.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.InfernoAudio.Inertia.aradocumentarchive.1.0.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""

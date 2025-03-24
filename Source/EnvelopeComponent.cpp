@@ -72,7 +72,8 @@ void EnvelopeComponent::paint(juce::Graphics& g) {
     juce::Colour axisColour = juce::Colour(141,96,130);
     float alpha = .7f;
     float alphaMult = .5f;
-    int maxPowerOfTwo = std::pow(2.f, std::floor(std::log2(maxRate)));
+    float maxPowerOfTwo = std::pow(2.f, std::floor(std::log2(maxRate)));
+    jassert(maxPowerOfTwo > 0);
     float scaleLinesScaling = height / maxRate;
     float nonScaledJump = maxPowerOfTwo;
     float lineWidth = std::sqrt(nonScaledJump) * 4.f;;
