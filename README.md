@@ -36,3 +36,4 @@ https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 - The goal is to have the phase start and end at integer multiples: which, when moduloed w/ 1, represent the very beginning of the arp pattern
 - If the phase starts and ends at integer multiples, the rhythm will align to the hosts rhythm at the beginning at end, regardless of how it may move in-between
 - this desmos graph I created visualizes this quite well: https://www.desmos.com/calculator/aijan9qq9g
+- this demo demonstrates how the plugin may be used in a simple context. The last trigger of the vocal sample via inertia *would* happen exactly at Bar 9 in FL Studio's playlist.
