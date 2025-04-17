@@ -8,7 +8,7 @@
 https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 
 ## Overview
-- Real-time audio processing with low latency
+- Real-time MIDI processing with low latency
 - Custom, edittable arpeggio-note editor
 - Intuitive, custom user interface
 - Built using modern C++ and the JUCE framework
