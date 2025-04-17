@@ -2,7 +2,7 @@
 
 # Inertia: a rhythm generating MIDI arpeggiator .vst plugin
 ### uses a novel approach for generating rhythms which change dynamically but start and end exactly on beat, great for "exponential rhythm" generation
-#### .vst download and support: https://discord.gg/Z8BCBDgh
+#### .vst3 download and support: https://discord.gg/Z8BCBDgh
 
 ## How-to (install and use)
 https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
