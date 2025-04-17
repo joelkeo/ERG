@@ -35,3 +35,4 @@ https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 - However, if we consider the rate's antiderivate (phase), we can with much more precision align the traversal to the host's rhtymic units (beats, bars, etc.) even if the rate is variable
 - The goal is to have the phase start and end at integer multiples: which, when moduloed w/ 1, represent the very beginning of the arp pattern
 - If the phase starts and ends at integer multiples, the rhythm will align to the hosts rhythm at the beginning at end, regardless of how it may move in-between
+- this desmos graph I created visualizes this quite well: https://www.desmos.com/calculator/aijan9qq9g
