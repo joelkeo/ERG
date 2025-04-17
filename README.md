@@ -8,9 +8,8 @@
 https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 
 ## Overview
-- Real-time MIDI processing with low latency
-- Custom, edittable arpeggio-note editor
-- Intuitive, custom user interface
+- Real-time, sample-accurate MIDI processing 
+- Custom, edittable arpeggio-note editor & user interface
 - Built using modern C++ and the JUCE framework
 
 ## MIDI Pipeline
