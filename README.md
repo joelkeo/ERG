@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 3. Computes arp notes based on phase signal: notes which start at 0 (for "All" currently held down noes), - 127 (# represents number of note that is currently held from host starting at the bottom note, going upwards) (in `ArpPattern.h/.cpp`)
 4. Converts arp notes to host understandable MIDI notes (back in `MidiScheduler.h/.cpp`)
 
-## Classes explanation
+## Classes Explanation
 - `PluginProcessor.h/.cpp`: Inherits from JUCE's `AudioProcessor` class. Root of MIDI handling, and parameter and plugin state management. Real pipline logic found in `Synth.h/.cpp`
 - `PluginEditor.h/.cpp`: Root of UI handling
 - `ArpPattern.h/.cpp`: Handles arpeggio note logic including converting phase signals to arpeggio notes
@@ -31,7 +31,7 @@ https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 - `EnvelopeComponent.h/cpp`: Renders visually the phase and rate (deriviate of phase) signals received from the VRPS. Also visualizes current phase/rate location as notes are held down. Works for aribtrary phase/rate signals, uses many binary searches to find phase integer multiples (which modulo to zero-crossings)
 - `MidiScheduler.h/.cpp`: Handles MIDI info received from host, and converts ArpNote data into actual MIDI notes
 
-## Basic idea behind the math:
+## Basic Idea Behind the Math:
 - We usually think of traversal through a MIDI pattern in terms of the rate
 - However, if we consider the rate's antiderivate (phase), we can with much more precision align the traversal start and end to the host's rhythmic units (beats, bars, etc.) even if the rate is variable
 - In our case a traveral typically consists of multiple looped arp patterns, but this concept is expandable (eg. a single pattern, targetting modulation signals, etc.)
