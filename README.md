@@ -18,7 +18,7 @@ https://www.youtube.com/watch?v=BA2aAcK3R1I&t=12s&ab_channel=Inferno
 - Works on a per-audio-buffer basis
 - Multiple stages required since the user can generate various phase signals, and can create arbitrary arp patterns
 1. Registers new MIDI messages recieved form host (in `MidiScheduler.h/.cpp`), and handles events (such as when a point in time is found with no active host notes)
-2. Computes the phase signal from the current buffer (in `PhaseSignal.h/.cpp`), but real logic is held in (`VRPS.h/.cpp` and its inheriting classes)
+2. Computes the phase signal from the current buffer (in `PhaseSignal.h/.cpp`), based on events, but real logic is held in (`VRPS.h/.cpp` and its inheriting classes)
 3. Computes arp notes based on phase signal: notes which start at 0 (for "All" currently held down noes), - 127 (# represents number of note that is currently held from host starting at the bottom note, going upwards) (in `ArpPattern.h/.cpp`)
 4. Converts arp notes to host-understandable MIDI notes (back in `MidiScheduler.h/.cpp`)
 
